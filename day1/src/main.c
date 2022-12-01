@@ -1,5 +1,29 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<limits.h>
+
+#define ELVES_FOR_MOST 3
+#define INDEX_NOT_SEEN -1
+
+void updateCalorieMaxes(
+    int* calorieStorage,
+    int currentCalories)
+{
+    int minIndexSeen = INDEX_NOT_SEEN;
+    int minSeen = INT_MAX;
+
+    for (int j = 0; j < ELVES_FOR_MOST; j++) {
+        int stored = calorieStorage[j];
+
+        if (currentCalories > stored && stored < minSeen) {
+            minIndexSeen = j;
+            minSeen = stored;
+        }
+    }
+
+    if (minIndexSeen > INDEX_NOT_SEEN)
+        calorieStorage[minIndexSeen] = currentCalories;
+}
 
 int main()
 {
@@ -12,7 +36,7 @@ int main()
     size_t len = 0;
     ssize_t read;
 
-    int mostCalories = 0;
+    int mostCalories[ELVES_FOR_MOST] = { };
     int currentCalories = 0;
 
     while ((read = getline(&line, &len, inputptr)) != -1)
@@ -33,14 +57,25 @@ int main()
             currentCalories += atoi(line);
         }
         else {
+            updateCalorieMaxes(mostCalories, currentCalories);
             currentCalories = 0;
         }
-
-        if (currentCalories > mostCalories)
-            mostCalories = currentCalories;
     }
 
-    printf("Most calories: %d\n", mostCalories);
+    // account for the last batch
+    updateCalorieMaxes(mostCalories, currentCalories);
+
+    int total = 0;
+
+    for (int i = 0; i < ELVES_FOR_MOST; i++) {
+        int stored = mostCalories[i];
+        
+        total += stored;
+
+        printf("Most calories %d: %d\n", i + 1, stored);
+    }
+
+    printf("Total: %d\n", total);
 
     return 0;
 }
