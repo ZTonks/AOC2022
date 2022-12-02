@@ -1,3 +1,5 @@
+#include<stdio.h>
+
 #include<rpsenums.h>
 
 #define MODULUS 3
@@ -17,32 +19,32 @@ enum RPS_OPPONENT parseOpponent(
     }
 }
 
-enum RPS_PLAYED parsePlayer(
-    char play
+struct AIM_PLAY* parsePlayer(
+    enum RPS_OPPONENT opponentPlay,
+    char intention,
+    struct AIM_PLAY* aimPlay
 ) {
-    switch (play) {
+    switch (intention) {
         case 'X':
-            return PLAY_ROCK;
+            aimPlay->aim = AIM_LOSE;
+            aimPlay->play = (opponentPlay + MODULUS + 2) % MODULUS;
+            break;
         case 'Y':
-            return PLAY_PAPER;
+            aimPlay->aim = AIM_DRAW;
+            aimPlay->play = (int)opponentPlay;
+            break;
         case 'Z':
-            return PLAY_SCISSORS;
+            aimPlay->aim = AIM_WIN;
+            aimPlay->play = (opponentPlay + 1) % MODULUS;
+            break;
         default:
-            return 0;
+            return NULL;
     }
+    return aimPlay;
 }
 
-enum POINTS evaluateWin(
-    enum RPS_PLAYED play,
-    enum RPS_OPPONENT opponent
+enum POINTS evaluatePoints(
+    struct AIM_PLAY* aimPlay
 ) {
-   if ((int)opponent == (int)play) {
-    return DRAW;
-   } else if (opponent % MODULUS == (play + 1) % MODULUS) {
-    return LOSS;
-   } else if ((opponent + 1) % MODULUS == play % MODULUS) {
-    return WIN;
-   } else {
-    return -1;
-   }
+    return aimPlay->play + 1 + aimPlay->aim * POINTS_FACTOR;
 }

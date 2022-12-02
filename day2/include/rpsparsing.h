@@ -4,7 +4,7 @@
 #define RPS_PARSING_H
 
 enum RPS_OPPONENT parseOpponent(char play);
-enum RPS_PLAYED parsePlayer(char play);
-enum POINTS evaluateWin(enum RPS_PLAYED play, enum RPS_OPPONENT opponent);
+struct AIM_PLAY* parsePlayer(enum RPS_OPPONENT opponentPlay, char intention, struct AIM_PLAY* aimPlay);
+enum POINTS evaluatePoints(struct AIM_PLAY* aimPlay);
 
 #endif

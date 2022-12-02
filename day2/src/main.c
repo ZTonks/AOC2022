@@ -19,13 +19,13 @@ int main()
 
     while ((read = getline(&line, &len, inputptr)) != -1 && read > 1)
     {
+        struct AIM_PLAY aimPlay;
         enum RPS_OPPONENT opponentPlay = parseOpponent(line[0]);
-        enum RPS_PLAYED myPlay = parsePlayer(line[2]);
-        int score = evaluateWin(myPlay, opponentPlay);
-        if (score < 0) {
+        struct AIM_PLAY* aimPlayOut = parsePlayer(opponentPlay, line[2], &aimPlay);
+        if (!aimPlayOut) {
             return -1;
         }
-        totalScore += myPlay + score;
+        totalScore += evaluatePoints(aimPlayOut);
     }
 
     printf("Total score: %d\n", totalScore);
