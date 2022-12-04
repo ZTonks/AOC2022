@@ -49,6 +49,5 @@ int hasContain(
     int valThree = parseFirstValue(assignments, indexPtr);
     int valFour = parseSecondValue(assignments, indexPtr, lineLength);
 
-    return valOne <= valThree && valTwo >= valFour
-        || valThree <= valOne && valFour >= valTwo;
+    return valTwo >= valThree && valOne <= valFour;
 }
