@@ -48,8 +48,9 @@ int rearrange(
         return errCode;
 
     int i = 0;
+    int start = topOfStackFrom.index - rearrangement->numBlocks + 1;
 
-    for (int j = topOfStackFrom.index; i < rearrangement->numBlocks; j--) {
+    for (int j = start; i < rearrangement->numBlocks; j++) {
         stackTo[topOfStackTo.index + 1 + i++] = stackFrom[j];
         stackFrom[j] = LINE_TERMINATOR;
     }
